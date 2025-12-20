@@ -1,0 +1,33 @@
+{
+  "name": "arc-opencl-dev",
+  "image": "arc-opencl-dev",
+
+  "runArgs": [
+    "--device=/dev/dri",
+    "--user=${localEnv:UID}:${localEnv:GID}",
+    "--group-add=110",  // rende
+    "--group-add=44",   // video
+    "--restart=unless-stopped",
+    "--mount=type=volume,source=bash-history,target=/root"
+  ],
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
+
+  "overrideCommand": true,
+  "postCreateCommand": "sleep infinity",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.remote-containers"
+      ]
+    }
+  }
+}
