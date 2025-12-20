@@ -7,20 +7,20 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 find_package(OpenMP REQUIRED)
 
-add_executable(tree_cpu main.c)
-target_link_libraries(tree_cpu PRIVATE OpenMP::OpenMP_C)
-target_compile_options(tree_cpu PRIVATE -Wall -Wextra -Wpedantic)
+add_executable(cpu_tree main.c)
+target_link_libraries(cpu_tree PRIVATE OpenMP::OpenMP_C)
+target_compile_options(cpu_tree PRIVATE -Wall -Wextra -Wpedantic)
 
-add_executable(tree_gpu main.c)
-target_link_libraries(tree_gpu PRIVATE OpenMP::OpenMP_C)
-target_compile_options(tree_gpu PRIVATE -Wall -Wextra -Wpedantic)
+add_executable(gpu_tree main.c)
+target_link_libraries(gpu_tree PRIVATE OpenMP::OpenMP_C)
+target_compile_options(gpu_tree PRIVATE -Wall -Wextra -Wpedantic)
 
-target_compile_options(tree_gpu PRIVATE
+target_compile_options(gpu_tree PRIVATE
   -fiopenmp
   -fopenmp-targets=spir64
 )
-target_link_options(tree_gpu PRIVATE
+target_link_options(gpu_tree PRIVATE
   -fiopenmp
   -fopenmp-targets=spir64
 )
-target_compile_definitions(tree_gpu PRIVATE OPENMP_TARGET_GPU=1)
+target_compile_definitions(gpu_tree PRIVATE OPENMP_TARGET_GPU=1)
