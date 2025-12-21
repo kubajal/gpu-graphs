@@ -5,6 +5,11 @@ This repo is a minimal, reproducible scaffold:
 - bottom-up pattern matching stub
 - OpenCL smoke test (verifies GPU execution path)
 
+## Educational materials
+
+1. [Run HPC Applications on CPUs & GPUs with Xe Architecture Using Intel® C++ & Intel® Fortran Compilers with OpenMP*
+by Xianmin Tian](https://www.intel.com/content/www/us/en/developer/videos/run-hpc-apps-intel-c-fortran-compilers-with-openmp.html): video and slides unavailable elsewhere
+
 # Prerequisities
 
 ## Host requirements (important for Intel Arc A770)
