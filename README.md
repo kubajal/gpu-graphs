@@ -61,6 +61,10 @@ Run:
 
 ## Build (Debug)
 
+Debugging prerequisities: 
+ 1. https://www.intel.com/content/www/us/en/docs/distribution-for-gdb/get-started-guide-linux/2025-2/overview.html
+ 2. https://dgpu-docs.intel.com/driver/installation.html
+
 ```
 cmake -S . -B build_dbg -G Ninja \
   -DCMAKE_C_COMPILER=clang \

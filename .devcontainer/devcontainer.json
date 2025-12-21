@@ -26,7 +26,8 @@
         "ms-python.python",
         "ms-vscode.cpptools",
         "ms-vscode.cmake-tools",
-        "ms-vscode.remote-containers"
+        "ms-vscode.remote-containers",
+        "eamodio.gitlens"
       ]
     }
   }
