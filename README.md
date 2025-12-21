@@ -5,6 +5,8 @@ This repo is a minimal, reproducible scaffold:
 - bottom-up pattern matching stub
 - OpenCL smoke test (verifies GPU execution path)
 
+# Prerequisities
+
 ## Host requirements (important for Intel Arc A770)
 The Intel kernel driver and `/dev/dri` live on the host, not inside Docker.
 To access the GPU from the container you must pass `/dev/dri` through.
@@ -43,7 +45,9 @@ clinfo | sed -n '1,120p'
 You should see an Intel platform/device. If not, it's usually a host permission issue
 (you may need your host user in the render group).
 
-## Build (Release)
+# Build
+
+## Release
 
 ```
 cmake -S . -B build -G Ninja \
@@ -59,7 +63,7 @@ Run:
 ./build/stub
 ```
 
-## Build (Debug)
+## Debug
 
 Debugging prerequisities: 
  1. https://www.intel.com/content/www/us/en/docs/distribution-for-gdb/get-started-guide-linux/2025-2/overview.html
@@ -79,3 +83,9 @@ Run:
 ```
 ./build_dbg/stub
 ```
+
+## VSCode IntelliSense
+
+ 1. make sure you used `CMAKE_EXPORT_COMPILE_COMMANDS=1`
+ 2. disable MS C++ extensions's IntelliSense, ie. in .vscode/settings.json put `"C_Cpp.intelliSenseEngine": "disabled"`
+ 3. make sure that the path set in the `.clangd` file points to the correct `compile_commands.json`
