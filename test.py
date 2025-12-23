@@ -1,7 +1,3 @@
-import sys
-import ctypes as ct
-
-print("Python:", sys.version)
 
 import gpu_graphlib as gpu
 

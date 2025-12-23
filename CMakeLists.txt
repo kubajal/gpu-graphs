@@ -18,3 +18,12 @@ target_compile_options(gpu_graphlib PUBLIC
   -fiopenmp
   -fopenmp-targets=spir64
 )
+
+set(_PY_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bindings/python/src/gpu_graphlib/.lib")
+
+add_custom_command(TARGET gpu_graphlib POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${_PY_LIB_DIR}"
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          "$<TARGET_FILE:gpu_graphlib>"
+          "${_PY_LIB_DIR}/$<TARGET_FILE_NAME:gpu_graphlib>"
+)

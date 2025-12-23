@@ -1,13 +1,14 @@
 import ctypes as ct
+from importlib.resources import files
 
-from bindings.python.src.gpu_graphlib._ctypes import Attribute, Graph, Edge, Logger
-from ._loader import load_gpu_graphlib
+from gpu_graphlib._ctypes import Graph, Logger
 
 LOG_LEVEL_ERROR = 0
 LOG_LEVEL_INFO = 1
 LOG_LEVEL_DEBUG = 2
 
-_lib = load_gpu_graphlib()
+_lib_path = files(__package__).joinpath(".lib/libgpu_graphlib.so")
+_lib = ct.CDLL(str(_lib_path))
 
 _lib.malloc_graph.argtypes = [ct.c_uint, ct.c_uint]
 _lib.malloc_graph.restype = ct.POINTER(Graph)
