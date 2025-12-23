@@ -41,8 +41,8 @@ void set_log_level(Logger *logger, enum LOG_LEVEL log_level);
       log_info((logger)->info_output, "%s:%d: " fmt, __FILE__, __LINE__,       \
                ##__VA_ARGS__);                                                 \
     } else {                                                                   \
+      log_info((logger)->info_output, fmt, ##__VA_ARGS__);                       \
     }                                                                          \
-    log_info((logger)->info_output, fmt, ##__VA_ARGS__);                       \
   }
 
 #define LOG_ERROR(logger, fmt, ...)                                            \
