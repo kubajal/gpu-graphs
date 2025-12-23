@@ -1,7 +1,11 @@
 import ctypes as ct
 
-from bindings.python.src.gpu_graphlib._ctypes import Attribute, Graph, Edge
+from bindings.python.src.gpu_graphlib._ctypes import Attribute, Graph, Edge, Logger
 from ._loader import load_gpu_graphlib
+
+LOG_LEVEL_ERROR = 0
+LOG_LEVEL_INFO = 1
+LOG_LEVEL_DEBUG = 2
 
 _lib = load_gpu_graphlib()
 
@@ -30,4 +34,15 @@ _lib.add_node.restype = None
 def add_node(graph: ct._Pointer, node_id: int, attribute_type: int, attribute_value: int) -> None:
     _lib.add_node(graph, node_id, attribute_type, attribute_value)
 
-_lib.init_static_logger()
+_lib.set_log_level.argtypes = [ct.POINTER(Logger), ct.c_uint]
+_lib.set_log_level.restype = None
+def set_log_level(logger: ct._Pointer, log_level: int) -> None:
+    _lib.set_log_level(logger, log_level)
+
+_lib.get_static_logger.argtypes = None
+_lib.get_static_logger.restype = ct.POINTER(Logger)
+def get_static_logger() -> ct._Pointer:
+    return _lib.get_static_logger()
+
+static_logger = _lib.get_static_logger()
+_lib.init_logger(static_logger)

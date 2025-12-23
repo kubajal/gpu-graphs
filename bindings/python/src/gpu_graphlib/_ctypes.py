@@ -35,3 +35,10 @@ class Graph(ct.Structure):
         ("edges", ct.POINTER(Edge)),
         ("nodes", ct.POINTER(Attribute)),
     ]
+
+class Logger(ct.Structure):
+    _fields_ = [
+        ("log_level", ct.c_int),
+        ("print_location", ct.c_int),
+        # to do: the rest of C Logger fields
+    ]

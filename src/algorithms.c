@@ -8,6 +8,6 @@
 
 // BFS result: is target reachable from source?
 int bfs(const Graph *g, int source, int target, const Logger* log) {
-    log->error("UNIMPLEMNTED");
+    LOG_ERROR(log, "UNIMPLEMNTED");
     exit(1);
 }

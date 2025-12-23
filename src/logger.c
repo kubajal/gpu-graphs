@@ -4,7 +4,12 @@
 #include <stdio.h>
 
 // Warning: this logger is not thread safe!
-Logger static_logger;
+static Logger static_logger;
+
+Logger* get_static_logger(void)
+{
+    return &static_logger;
+}
 
 static void vlog_impl(FILE *out, const char *prefix,
                       const char *fmt, va_list ap)
@@ -14,45 +19,42 @@ static void vlog_impl(FILE *out, const char *prefix,
     fputc('\n', out);
 }
 
-static void log_info(const char *fmt, ...)
+void log_info(FILE* output, const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    vlog_impl(stdout, "[INFO]  ", fmt, ap);
+    vlog_impl(output, "[INFO]  ", fmt, ap);
     va_end(ap);
 }
 
-static void log_debug(const char *fmt, ...)
+void log_debug(FILE* output, const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    vlog_impl(stdout, "[DEBUG] ", fmt, ap);
+    vlog_impl(output, "[DEBUG] ", fmt, ap);
     va_end(ap);
 }
 
-static void log_error(const char *fmt, ...)
+void log_error(FILE* output, const char *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    vlog_impl(stderr, "[ERROR] ", fmt, ap);
+    vlog_impl(output, "[ERROR] ", fmt, ap);
     va_end(ap);
+}
+
+void set_log_level(Logger *logger, enum LOG_LEVEL log_level)
+{
+    logger->log_level = log_level;
 }
 
 void init_logger(Logger *logger)
 {
     if (!logger) return;
+    logger->print_location = 1;
     logger->log_level = INFO;
-    logger->info = log_info;
-    logger->debug = log_debug;
-    logger->error = log_error;
-}
-
-// Warning: this logger is not thread safe!
-void init_static_logger(void)
-{
-    static int done = 0;
-    if (done) return;
-    done = 1;
-    init_logger(&static_logger);
-    LOG_INFO("Static logger initialized");
+    logger->info_output = stdout;
+    logger->debug_output = stdout;
+    logger->error_output = stderr;
+    LOG_INFO(logger, "Logger initialized with INFO log level");
 }

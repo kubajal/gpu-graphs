@@ -7,7 +7,7 @@ Graph *malloc_graph(unsigned nodes_n, unsigned edges_n) {
     Graph *graph = malloc(sizeof(Graph));
     graph->edges = malloc(sizeof(Edge) * edges_n);
     graph->nodes = malloc(sizeof(Node) * nodes_n);
-    LOG_DEBUG("malloc graph finished");
+    LOG_DEBUG(get_static_logger(), "malloc graph finished");
     return graph;
 }
 
@@ -15,7 +15,7 @@ void free_graph(Graph *graph) {
     free(graph->edges);
     free(graph->nodes);
     free(graph);
-    LOG_DEBUG("free graph finished");
+    LOG_DEBUG(get_static_logger(), "free graph finished");
 }
 
 void add_edge(Graph *graph, const unsigned edge_id, const unsigned source, const unsigned target,
