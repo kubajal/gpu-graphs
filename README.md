@@ -55,17 +55,15 @@ You should see an Intel platform/device. If not, it's usually a host permission 
 ## Release
 
 ```
-cmake -S . -B build -G Ninja \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_BUILD_TYPE=Release
-
-cmake --build build --parallel
+$ cd build/Release
+$ cmake ../.. -DCMAKE_BUILD_TYPE=Release
+$ cmake --build . -j 8
 ```
 
 Run:
 
 ```
-./build/stub
+$ ./stub
 ```
 
 ## Debug
@@ -75,18 +73,15 @@ Debugging prerequisities:
  2. https://dgpu-docs.intel.com/driver/installation.html
 
 ```
-cmake -S . -B build_dbg -G Ninja \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_BUILD_TYPE=Debug \
-  -DENABLE_SANITIZERS=ON
-
-cmake --build build_dbg --parallel
+$ cd build/Release
+$ cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build . -j 8
 ```
 
 Run:
 
 ```
-./build_dbg/stub
+$ gdb-oneapi ./stub
 ```
 
 ## VSCode IntelliSense
@@ -94,3 +89,22 @@ Run:
  1. make sure you used `CMAKE_EXPORT_COMPILE_COMMANDS=1`
  2. disable MS C++ extensions's IntelliSense, ie. in .vscode/settings.json put `"C_Cpp.intelliSenseEngine": "disabled"`
  3. make sure that the path set in the `.clangd` file points to the correct `compile_commands.json`
+
+## Build Python bindings
+
+```
+# in project root folder
+$ python3 -m pip install --user -U build
+$ cmake --install build/Release/ --prefix /workspace/bindings/python/src
+$ python3 -m pip install -e bindings/python
+```
+
+# Build Python bindings
+
+Run Python test:
+
+```
+/workspace$ cmake --build ./build/Release/ \
+  && python3 -m pip install  bindings/python \
+  && PYTHONPATH=./build/Release/ python3 test.py
+```

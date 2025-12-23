@@ -49,5 +49,10 @@ RUN set -eux; \
     echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode; \
     chmod 0440 /etc/sudoers.d/vscode
 
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    python3-pip \
+    python3.10-venv
+
 WORKDIR /workspace
 CMD ["/bin/bash"]

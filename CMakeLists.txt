@@ -7,13 +7,14 @@ find_package(OpenMP REQUIRED)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-add_executable(gpu_tree src/main.c)
-target_include_directories(gpu_tree
+add_library(gpu_graphlib SHARED src/algorithms.c src/graph.c src/logger.c)
+target_include_directories(gpu_graphlib
   PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_link_libraries(gpu_tree PUBLIC OpenMP::OpenMP_C)
-target_compile_options(gpu_tree PUBLIC
+target_link_libraries(gpu_graphlib PUBLIC OpenMP::OpenMP_C)
+target_compile_options(gpu_graphlib PUBLIC
   -fiopenmp
   -fopenmp-targets=spir64
 )
