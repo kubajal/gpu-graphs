@@ -105,6 +105,6 @@ Run Python test:
 
 ```
 /workspace$ cmake --build ./build/Release/ \
-  && python3 -m pip install  bindings/python \
+  && python3 -m pip install . \
   && PYTHONPATH=./build/Release/ python3 test.py
 ```

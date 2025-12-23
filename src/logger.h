@@ -30,17 +30,19 @@ void set_log_level(Logger *logger, enum LOG_LEVEL log_level);
     if ((logger)->print_location == 1) {                                       \
       log_debug((logger)->debug_output, "%s:%d: " fmt, __FILE__, __LINE__,     \
                 ##__VA_ARGS__);                                                \
-    } else                                                                     \
+    } else {                                                                   \
       log_debug((logger)->debug_output, fmt, ##__VA_ARGS__);                   \
+    }                                                                          \
   }
 
 #define LOG_INFO(logger, fmt, ...)                                             \
   if ((logger)->log_level >= INFO) {                                           \
     if ((logger)->print_location == 1) {                                       \
-      log_info((logger)->info_output, "%s:%d: " fmt, __FILE__, __LINE__,      \
+      log_info((logger)->info_output, "%s:%d: " fmt, __FILE__, __LINE__,       \
                ##__VA_ARGS__);                                                 \
-    } else                                                                     \
-      log_info((logger)->info_output, fmt, ##__VA_ARGS__);                    \
+    } else {                                                                   \
+    }                                                                          \
+    log_info((logger)->info_output, fmt, ##__VA_ARGS__);                       \
   }
 
 #define LOG_ERROR(logger, fmt, ...)                                            \
@@ -48,8 +50,9 @@ void set_log_level(Logger *logger, enum LOG_LEVEL log_level);
     if ((logger)->print_location == 1) {                                       \
       log_error((logger)->error_output, "%s:%d: " fmt, __FILE__, __LINE__,     \
                 ##__VA_ARGS__);                                                \
-    } else                                                                     \
+    } else {                                                                   \
       log_error((logger)->error_output, fmt, ##__VA_ARGS__);                   \
+    }                                                                          \
   }
 
 #endif /* LOGGER_H */
