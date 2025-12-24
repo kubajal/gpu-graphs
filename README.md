@@ -55,9 +55,10 @@ You should see an Intel platform/device. If not, it's usually a host permission 
 ## Release
 
 ```
-$ cd build/Release
-$ cmake ../.. -DCMAKE_BUILD_TYPE=Release
-$ cmake --build . -j 8
+/workspace$ mkdir -p build/Release
+/workspace$ cd build/Release
+/workspace/build/Release$ cmake ../.. -DCMAKE_BUILD_TYPE=Release
+/workspace/build/Release$ cmake --build . -j 8
 ```
 
 Run:
@@ -73,9 +74,10 @@ Debugging prerequisities:
  2. https://dgpu-docs.intel.com/driver/installation.html
 
 ```
-$ cd build/Release
-$ cmake ../.. -DCMAKE_BUILD_TYPE=Debug
-$ cmake --build . -j 8
+/workspace$ mkdir -p build/Debug
+/workspace$ cd build/Debug
+/workspace/build/Debug$ cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+/workspace/build/Debug$ cmake --build . -j 8
 ```
 
 Run:
@@ -90,21 +92,27 @@ $ gdb-oneapi ./stub
  2. disable MS C++ extensions's IntelliSense, ie. in .vscode/settings.json put `"C_Cpp.intelliSenseEngine": "disabled"`
  3. make sure that the path set in the `.clangd` file points to the correct `compile_commands.json`
 
-## Build Python bindings
+# Run
+
+## Quick Python test
+
+Please note: build the C code in Release mode (refer to the [Release build](#release) section).
 
 ```
-# in project root folder
-$ python3 -m pip install --user -U build
-$ cmake --install build/Release/ --prefix /workspace/bindings/python/src
-$ python3 -m pip install -e bindings/python
+/workspace$ PYTHONPATH=`realpath ./bindings/python/src/` python3 test.py
 ```
 
-# Build Python bindings
+## Debug C in a Python script
 
-Run Python test:
+Please note: build the C code first in Debug mode (refer to the [Debug build](#debug) section).
 
 ```
-/workspace$ cmake --build ./build/Release/ \
-  && python3 -m pip install . \
-  && PYTHONPATH=./build/Release/ python3 test.py
+/workspace$ PYTHONPATH=`realpath ./bindings/python/src/` gdb-oneapi python3
+(gdb) set args test.py
+(gdb) b src/algorithms.cpp:11
+No symbol table is loaded.  Use the "file" command.
+Make breakpoint pending on future shared library load? (y or [n]) y
+Breakpoint 1 (src/algorithms.cpp:11) pending.
+(gdb) r
+Starting program: /usr/bin/python3 test.py
 ```

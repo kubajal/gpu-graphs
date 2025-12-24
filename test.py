@@ -8,5 +8,4 @@ ATTR_UNSIGNED = 0
 [edges, nodes, attributes_lookup] = gpu.ast_to_tree("./data/sample0.py")
 
 graph = gpu.create_graph(nodes, edges)
-gpu.print_graph(graph, 0, 0)
-
+gpu.bfs(graph, 0, 0)
