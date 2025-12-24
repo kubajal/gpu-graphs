@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <stdio.h>
 typedef enum { ATTR_UNSIGNED, ATTR_INT, ATTR_FLOAT, ATTR_PTR } AttributeType;
 
 typedef union {
@@ -43,3 +44,5 @@ void add_edge(Graph *graph, const unsigned edge_id, const unsigned source,
 void add_node(Graph *graph, const unsigned node_id,
               const AttributeType attribute_type,
               const AttributeValue attribute_value);
+
+void print_graph(const Graph *graph, unsigned current, unsigned indent);

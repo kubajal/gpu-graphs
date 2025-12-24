@@ -24,11 +24,9 @@ class Attribute(ct.Structure):
         ("_type", AttributeType),
         ("_value", AttributeValue),
     ]
-
     @property
     def type(self) -> AttributeType:
         return self._type
-
     @property
     def value(self) -> AttributeValue:
         return self._value
@@ -39,15 +37,12 @@ class Edge(ct.Structure):
         ("_target", ct.c_int),
         ("_data", Attribute),
     ]
-    
     @property
     def source(self) -> int:
         return self._source
-    
     @property
     def target(self) -> int:
         return self._target
-    
     @property
     def data(self) -> Attribute:
         return self._data
@@ -59,21 +54,17 @@ class Graph(ct.Structure):
         ("_edges", ct.POINTER(Edge)),
         ("_nodes", ct.POINTER(Attribute)),
     ]
-
     @property
     def nodes_n(self) -> int:
         return self._nodes_n
-
     @property
     def edges_n(self) -> int:
         return self._edges_n
-
     @property
-    def _edges(self) -> list[Edge]:
+    def edges(self) -> list[Edge]:
         return self._edges
-
     @property
-    def _nodes(self) -> list[Edge]:
+    def nodes(self) -> list[Edge]:
         return self._nodes
 
 class Logger(ct.Structure):
@@ -123,6 +114,11 @@ _lib.get_static_logger.argtypes = None
 _lib.get_static_logger.restype = ct.POINTER(Logger)
 def get_static_logger() -> ct._Pointer:
     return _lib.get_static_logger()
+
+_lib.print_graph.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint]
+_lib.print_graph.restype = None
+def print_graph(graph: ct._Pointer, current: int, indent: int) -> ct._Pointer:
+    return _lib.print_graph(graph, current, indent)
 
 static_logger = _lib.get_static_logger()
 _lib.init_logger(static_logger)

@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "graph.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -57,4 +58,12 @@ void init_logger(Logger *logger)
     logger->debug_output = stdout;
     logger->error_output = stderr;
     LOG_INFO(logger, "Logger initialized with INFO log level");
+}
+
+void print_graph(const Graph *graph, unsigned current, unsigned indent) {
+  printf("%*c%u\n", indent, ' ', current);
+  for (int i = 0; i < graph->edges_n; i++) {
+    const Edge* edge = &graph->edges[i];
+    printf("%u %u", edge->source, edge->target);
+  }
 }
