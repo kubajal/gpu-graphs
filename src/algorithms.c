@@ -8,6 +8,6 @@
 
 // BFS result: is target reachable from source?
 int bfs(const Graph *g, int source, int target, const Logger* log) {
-    LOG_ERROR(log, "UNIMPLEMNTED");
+    LOG_ERROR(log, "Unimplemented");
     exit(1);
 }

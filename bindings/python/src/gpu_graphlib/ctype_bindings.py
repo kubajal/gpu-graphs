@@ -90,10 +90,10 @@ _lib.free_graph.restype = None
 def free_graph(graph: ct._Pointer) -> None:
     _lib.free_graph(graph)
 
-_lib.bfs.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint]
+_lib.bfs.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint, ct.POINTER(Logger)]
 _lib.bfs.restype = ct.c_int
-def bfs(graph: ct._Pointer, source: int, target: int) -> int:
-    return int(_lib.bfs(graph, source, target))
+def bfs(graph: ct._Pointer, source: int, target: int, logger: ct._Pointer) -> int:
+    return int(_lib.bfs(graph, source, target, logger))
 
 _lib.add_edge.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint, ct.c_uint, ct.c_int, ct.c_uint]
 _lib.add_edge.restype = None

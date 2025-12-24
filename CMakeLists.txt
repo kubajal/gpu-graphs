@@ -23,7 +23,7 @@ set(_PY_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bindings/python/src/gpu_graphlib/.l
 
 add_custom_target(copy_gpu_graphlib ALL
   COMMAND ${CMAKE_COMMAND} -E make_directory "${_PY_LIB_DIR}"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different`
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
           "$<TARGET_FILE:gpu_graphlib>"
           "${_PY_LIB_DIR}/$<TARGET_FILE_NAME:gpu_graphlib>"
   DEPENDS gpu_graphlib
