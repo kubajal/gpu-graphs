@@ -1,3 +1,0 @@
-CompileFlags:
-  Compiler: /opt/intel/oneapi/compiler/2025.2/bin/compiler/icx
-  CompilationDatabase: build/Release

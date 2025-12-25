@@ -1,0 +1,4 @@
+{
+    "C_Cpp.default.compilerPath": "/opt/intel/oneapi/2025.2/bin/icx",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/Release/compile_commands.json"
+}
