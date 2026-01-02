@@ -6,3 +6,6 @@ __pycache__/
 *.egg-info
 *.so
 *.whl
+
+tmp/
+r000*/ # vtune results
