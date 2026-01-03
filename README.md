@@ -20,7 +20,7 @@ To access the GPU from the container you must pass `/dev/dri` through.
 From this directory:
 
 ```bash
-docker build -t arc-opencl-dev .
+cd docker && docker build -t arc-opencl-dev .
 ```
 
 ## Run the container (with GPU access)
@@ -29,7 +29,8 @@ docker build -t arc-opencl-dev .
 110 = `render` group
 
 ```
-docker run -d \
+cd gpu && docker run -d \
+  --user=vscode
   --name arc-opencl-dev \
   --device=/dev/dri \
   --group-add 110 \
@@ -116,3 +117,53 @@ Breakpoint 1 (src/algorithms.cpp:11) pending.
 (gdb) r
 Starting program: /usr/bin/python3 test.py
 ```
+
+# vtune
+
+### On the host
+
+See:
+ - https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2023-2/set-up-system-for-gpu-analysis.html
+
+#### Enable hardware profiling on Arc A770 (needed after each reboot):
+
+```
+sudo sysctl -w dev.i915.perf_stream_paranoid=0
+```
+
+#### Build the Docker image
+
+```
+cd docker && docker build -t arc-opencl-dev -f Dockerfile . && cd -
+```
+
+#### Run the Docker image
+
+```
+docker run -it --name arc-opencl-dev   --device=/dev/dri    --group-add 44   -v "$(pwd)":/workspace   --workdir /workspace --user vscode   arc-opencl-dev bash
+```
+
+## Inside Docker
+
+##### Test VTune
+
+```
+/workspace $ vtune -c gpu-offload ./test.py
+```
+
+#### Set up VTune Agent
+
+See [VTune agent set-up documentation](https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2025-1/deploy-vtune-profiler-agent.html).
+
+##### Start sshd
+
+```
+$ sudo /usr/sbin/sshd
+```
+
+##### VTune Agent
+
+user name: `vscode`
+private key: `docker/dummy_keys/id_rsa`
+
+![VTune Agent Deployment](image.png)

@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=/usr/lib/x86_64-linux-gnu
+includedir=/usr/include
+
+Name: libigdmd
+Description: Intel(R) Metrics Discovery Application Programming Interface
+Version: 1.12.172
+
+Libs: -L${libdir} -ligdmd
+Cflags: -I${includedir}

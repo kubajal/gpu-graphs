@@ -27,7 +27,8 @@
         "ms-vscode.cpptools",
         "ms-vscode.cmake-tools",
         "ms-vscode.remote-containers",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "shardulm94.trailing-spaces"
       ]
     }
   }

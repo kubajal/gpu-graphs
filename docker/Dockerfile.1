@@ -1,0 +1,29 @@
+FROM intel/oneapi-hpckit:2025.3.0-0-devel-ubuntu22.04
+
+RUN apt-get update && apt-get install -y \
+    clinfo
+
+RUN apt-get install cmake-curses-gui
+
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    python3-pip \
+    python3.10-venv
+
+COPY dummy_keys/id_rsa /home/vscode/.ssh/id_rsa
+COPY dummy_keys/id_rsa.pub /home/vscode/.ssh/id_rsa.pub
+COPY dummy_keys/id_rsa.pub /home/vscode/.ssh/authorized_keys
+RUN chmod 600 /home/vscode/.ssh/id_rsa && \
+    chmod 644 /home/vscode/.ssh/id_rsa.pub && \
+    printf "Host *\n\tStrictHostKeyChecking no\n" > /home/vscode/.ssh/config && \
+    chmod 600 /home/vscode/.ssh/config
+
+COPY lib/* /opt/intel/oneapi/vtune/2025.4/lib64/
+COPY lib/* /opt/intel/oneapi/vtune/2025.4/lib32/
+    
+# needed for sshd process
+RUN mkdir -p /run/sshd
+
+WORKDIR /workspace
+CMD ["/bin/bash"]
+
