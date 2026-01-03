@@ -1,5 +1,6 @@
 
 from .ctype_bindings import add_edge, add_node, malloc_graph
+ATTR_UNSIGNED = 0
 
 def create_graph(nodes, edges):
     nodes_n = len(nodes)
@@ -12,15 +13,14 @@ def create_graph(nodes, edges):
         add_node(graph, node, attribute_type, attribute_value)
     edges_counter = 0
     for source in edges:
-        for attribute in edges[source]:
-            (attribute_type, attribute_value) = attribute
+        for target in edges[source]:
             add_edge(
                 graph,
                 edges_counter,
                 source,
-                attribute_value,
-                attribute_type,
-                attribute_value,
+                target,
+                ATTR_UNSIGNED,
+                target,
             )
             edges_counter = edges_counter + 1
 

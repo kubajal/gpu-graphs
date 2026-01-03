@@ -1,7 +1,7 @@
 from .ctype_bindings import (
     add_edge,
     add_node,
-    bfs,
+    dijkstra,
     malloc_graph,
     free_graph,
     set_log_level,

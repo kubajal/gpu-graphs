@@ -1,4 +1,5 @@
 
 #include "graph.h"
+#include <stdio.h>
 
-int bfs(const Graph* graph, unsigned source, unsigned target);
+unsigned dijkstra(const Graph* graph, node_id_t source, node_id_t target);
