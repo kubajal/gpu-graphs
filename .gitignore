@@ -8,5 +8,7 @@ __pycache__/
 *.whl
 
 tmp/
-r00*/
+
+# vtune output
+r[0-9]*/
 vtune/
