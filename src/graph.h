@@ -33,13 +33,6 @@ typedef struct {
   Node *nodes;
 } Graph;
 
-typedef struct {
-  node_id_t nodes_n;
-  node_id_t edges_n;
-  node_id_t* col_ptr;
-  node_id_t* node_ptr;
-} CSRGraph;
-
 Graph *malloc_graph(node_id_t nodes_n, node_id_t edges_n);
 void free_graph(Graph *g);
 
@@ -52,6 +45,5 @@ void add_edge(Graph *graph, const node_id_t edge_id, const node_id_t source,
 void add_node(Graph *graph, const node_id_t node_id,
               const AttributeType attribute_type,
               const AttributeValue attribute_value);
-CSRGraph* to_csr(const Graph *graph);
 
 void print_graph(const Graph *graph, node_id_t current, unsigned indent);

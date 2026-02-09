@@ -12,44 +12,56 @@ by Xianmin Tian](https://www.intel.com/content/www/us/en/developer/videos/run-hp
 
 # Prerequisities
 
-## Host requirements (important for Intel Arc A770)
-The Intel kernel driver and `/dev/dri` live on the host, not inside Docker.
-To access the GPU from the container you must pass `/dev/dri` through.
+This project was tested on Ubuntu 22.04, kernel version: 6.8.0-90-generic.
 
-## Build the Docker image
-From this directory:
+Firstly, see https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2023-0/apt.html and install all the requirements there (most importantly: `sudo apt install intel-basekit`).
 
-```bash
-cd docker && docker build -t arc-opencl-dev .
+Then, install:
+```
+sudo apt-get install linux-tools-6.8.0-90
+sudo apt -y install cmake pkg-config build-essential
+cd neo/
+wget -q https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.20/intel-igc-core_1.0.17537.20_amd64.deb;
+ wget -q https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.20/intel-igc-opencl_1.0.17537.20_amd64.deb;
+ wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.22/libigdgmm12_22.5.0_amd64.deb;
+ wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.22/intel-level-zero-gpu_1.3.30872.22_amd64.deb;
+ wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.22/intel-level-zero-gpu-legacy1_1.3.30872.22_amd64.deb;
+ wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.22/intel-opencl-icd_24.35.30872.22_amd64.deb;
+ wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.22/intel-opencl-icd-legacy1_24.35.30872.22_amd64.deb;
+ dpkg -i ./*.deb || true;
+ apt-get update;
+ apt-get install -y -f;
 ```
 
-## Run the container (with GPU access)
+#### VTune
 
-44 = `video` group
-110 = `render` group
-
+If you want to use VTune, install Intel SEP drivers (requires `intel-basekit`):
 ```
-cd gpu && docker run -d \
-  --user=vscode
-  --name arc-opencl-dev \
-  --device=/dev/dri \
-  --group-add 110 \
-  --group-add 44 \
-  -v "$(pwd)":/workspace \
-  --workdir /workspace \
-  --restart unless-stopped \
-  arc-opencl-dev \
-  sleep infinity
+$ cd /opt/intel/oneapi/vtune/latest/sepdk/src
+$ ./build-driver -c gcc-12
+$ ./boot-script -i
+$ sudo ./insmod-sep -r
 ```
 
-Inside the container, check OpenCL visibility:
-
+I couldn't make Ubuntu 22.04 and kernel version 6.8.0-90-generic collect the default CPU measurements because of this error:
 ```
-clinfo | sed -n '1,120p'
+vtune: Error: The following events cannot be collected: INST_RETIRED.ANY,CPU_CLK_UNHALTED.THREAD,CPU_CLK_UNHALTED.REF_TSC,CPU_CLK_UNHALTED.DISTRIBUTED. Consider removing the events from the collection, loading the VTune Profiler sampling driver using the root credentials, or updating the OS kernel.
 ```
 
-You should see an Intel platform/device. If not, it's usually a host permission issue
-(you may need your host user in the render group).
+Setting this helped, this disables the Linux `perf` tool for VTune and the error is gone but it narrows down what gets collected:
+```
+sudo sysctl -w dev.i915.perf_stream_paranoid=3
+```
+
+Then to partially compensate CPU stack collection use:
+```
+-knob enable-stack-collection=false -knob enable-tasks-stack-collection=true
+```
+
+So to sum up use this to collect performance statistics in VTune:
+```
+$ PYTHONPATH=<path>/gpu/bindings/python/src/ vtune -c gpu-offload -knob enable-stack-collection=false -knob enable-tasks-stack-collection=true ./test.py
+```
 
 # Build
 
@@ -117,53 +129,3 @@ Breakpoint 1 (src/algorithms.cpp:11) pending.
 (gdb) r
 Starting program: /usr/bin/python3 test.py
 ```
-
-# vtune
-
-### On the host
-
-See:
- - https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2023-2/set-up-system-for-gpu-analysis.html
-
-#### Enable hardware profiling on Arc A770 (needed after each reboot):
-
-```
-sudo sysctl -w dev.i915.perf_stream_paranoid=0
-```
-
-#### Build the Docker image
-
-```
-cd docker && docker build -t arc-opencl-dev -f Dockerfile . && cd -
-```
-
-#### Run the Docker image
-
-```
-docker run -it --name arc-opencl-dev   --device=/dev/dri    --group-add 44   -v "$(pwd)":/workspace   --workdir /workspace --user vscode   arc-opencl-dev bash
-```
-
-## Inside Docker
-
-##### Test VTune
-
-```
-/workspace $ vtune -c gpu-offload ./test.py
-```
-
-#### Set up VTune Agent
-
-See [VTune agent set-up documentation](https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2025-1/deploy-vtune-profiler-agent.html).
-
-##### Start sshd
-
-```
-$ sudo /usr/sbin/sshd
-```
-
-##### VTune Agent
-
-user name: `vscode`
-private key: `docker/dummy_keys/id_rsa`
-
-![VTune Agent Deployment](image.png)

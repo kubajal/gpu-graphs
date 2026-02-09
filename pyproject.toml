@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gpu-graphlib"
 version = "0.1.0"
-description = "ctypes bindings for libgpu_graphlib"
+description = "ctypes bindings for libarboqllib"
 requires-python = ">=3.10"
 dependencies = []
 
@@ -16,4 +16,4 @@ package-dir = {"" = "bindings/python/src"}
 where = ["bindings/python/src"]
 
 [tool.setuptools.package-data]
-gpu_graphlib = [".lib/libgpu_graphlib.so", ".lib/*.so.*"]
+arboqllib = [".lib/libarboqllib.so", ".lib/*.so.*"]

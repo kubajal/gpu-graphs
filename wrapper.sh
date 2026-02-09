@@ -1,0 +1,1 @@
+PYTHONPATH=/home/kubajal/development/gpu/bindings/python/src/ ./test.py
