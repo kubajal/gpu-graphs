@@ -8,7 +8,9 @@
 #define MAX_DISTANCE 100000
 #define MAX_NODES 100000
 
-uint32_t dijkstra(const Graph *g, int32_t source, int32_t target, const Logger *log) {
+uint32_t match(const Graph *ast, const Graph *pattern, const Logger *log) {
+    print_graph(ast, 0, 0);
+    print_graph(pattern, 0, 0);
     return 42;
 }
 

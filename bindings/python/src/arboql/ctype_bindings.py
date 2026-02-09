@@ -90,10 +90,10 @@ _lib.free_graph.restype = None
 def free_graph(graph: ct._Pointer) -> None:
     _lib.free_graph(graph)
 
-_lib.dijkstra.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint, ct.POINTER(Logger)]
-_lib.dijkstra.restype = ct.c_uint32
-def dijkstra(graph: ct._Pointer, source: ct.c_uint32, target: ct.c_uint32, logger: ct._Pointer) -> int:
-    return int(_lib.dijkstra(graph, source, target, logger))
+_lib.match.argtypes = [ct.POINTER(Graph), ct.POINTER(Graph), ct.POINTER(Logger)]
+_lib.match.restype = ct.c_uint32
+def match(graph: ct._Pointer, pattern: ct._Pointer, logger: ct._Pointer) -> int:
+    return int(_lib.match(graph, pattern, logger))
 
 _lib.add_edge.argtypes = [ct.POINTER(Graph), ct.c_uint, ct.c_uint, ct.c_uint, ct.c_int, ct.c_uint]
 _lib.add_edge.restype = None

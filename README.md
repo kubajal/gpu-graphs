@@ -112,7 +112,7 @@ $ gdb-oneapi ./stub
 Please note: build the C code in Release mode (refer to the [Release build](#release) section).
 
 ```
-/workspace$ PYTHONPATH=`realpath ./bindings/python/src/` python3 test.py
+/workspace$ PYTHONPATH=/home/kubajal/development/gpu/bindings/python/src/ python3 ./test.py
 ```
 
 ## Debug C in a Python script

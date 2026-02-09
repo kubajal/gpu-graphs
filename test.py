@@ -23,10 +23,17 @@ graph = arboql.create_graph(
         1: [2]
     })
 
-SOURCE = 0
-TARGET = 2
-print("Running Dijkstra")
-distance = arboql.dijkstra(graph, SOURCE, TARGET, static_logger)
-arboql.free_graph(graph)
-print(f"Distance {SOURCE}->{TARGET} = {distance}")
 
+pattern = arboql.create_graph(
+    {
+        0: (ATTR_UNSIGNED, 0),
+        1: (ATTR_UNSIGNED, 1)
+    },
+    {
+        0: [1]
+    })
+
+print("Running pattern matching")
+status = arboql.match(graph, pattern, static_logger)
+arboql.free_graph(graph)
+print(f"Status {status}")

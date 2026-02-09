@@ -7,7 +7,14 @@ find_package(OpenMP REQUIRED)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-add_library(arboqllib SHARED src/algorithms.c src/graph.c src/logger.c)
+add_library(arboqllib SHARED
+  src/algorithms/cartesian_product.c 
+  src/algorithms/injective_mappings.c 
+  src/algorithms/pattern_matching.c 
+  src/graph.c 
+  src/logger.c
+)
+
 target_include_directories(arboqllib
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -15,7 +22,7 @@ target_include_directories(arboqllib
 )
 target_link_libraries(arboqllib PUBLIC OpenMP::OpenMP_C)
 
-set(_PY_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bindings/python/src/arboqllib/.lib")
+set(_PY_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bindings/python/src/arboql/.lib")
 
 add_custom_target(copy_arboqllib ALL
   COMMAND ${CMAKE_COMMAND} -E make_directory "${_PY_LIB_DIR}"
